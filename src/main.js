@@ -14,6 +14,7 @@ const PER_PAGE = 15;
 let currentPage = 1;
 let strSearch = '';
 let heightCard = 0;
+let lightbox;
 
 form.addEventListener('submit', evt => {
   evt.preventDefault();
@@ -54,12 +55,15 @@ async function displayGallery(currentPage) {
   messanges.success(totalHits, loadImage);
   gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
 
-  const lightbox = new SimpleLightbox('.gallery a', {
-    captions: true,
-    captionsData: 'alt',
-    captionDelay: 250,
-  });
-  lightbox.refresh();
+  if (lightbox) {
+    lightbox.refresh();
+  } else {
+    lightbox = new SimpleLightbox('.gallery a', {
+      captions: true,
+      captionsData: 'alt',
+      captionDelay: 250,
+    });
+  }
 
   if (currentPage === 1 && totalHits > PER_PAGE) {
     heightCard = Math.round(
